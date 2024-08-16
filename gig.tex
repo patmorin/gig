@@ -132,6 +132,38 @@
 
 \section{Introduction}
 
+These are some notes about try to extend the following theorem of Alon from unit disks to arbitrary disks:
+
+\begin{thm}[Alon]\label{alon}
+  For every set $S$ of $n$ disjoint unit discs in the plane, there exists a direction $\alpha$ such that every line parallel to $\alpha$ intersects $O(\sqrt{n\log n})$ discs in $S$.
+\end{thm}
+
+One application of this result is that if $G$ is a unit disc intersection graph with maximum clique size $\omega$, then performing performing a line sweep with lines in direction $\alpha$, this gives an unit-interval graph that contains $G$ and has maximum clique size $O(\omega \sqrt{n\log n})$.  Variations of this for intersection graphs of discs whose radii can be covered by a bounded-size set of intervals of the form $[a,2a]$ show, for example, that such graphs are contained in $O(\omega\sqrt{n\log n})$-blowups for bounded pathwidth graphs, where the pathwidth depends only on the number of intervals needed to cover the radii of the discs.
+
+Of course, \cref{alon} can't be extended to arbitrary sets of disjoint discs because the following arrangement of discs has a point $p$ such that every line that contains $p$ intersects at least $n/6$ of the discs.
+
+\begin{center}
+  \includegraphics{figs/spider}
+\end{center}
+
+One possibility is to do a circle sweep instead. In the bad example above, choosing $p$ to be the center of the figure and sweeping with a circle centered at $p$ gives an interval graph representation with maximum clique size $12$.  In general there is not always a good $p$  If you construct two copies of the preceding example that are very far apart then $p$ will be so far from at least one of them that all circles centered at $p$ basically behave like parallel lines with respect to this copy.
+
+Now that I write this, I see that this example also explains why what I discuss below can't work.  But, here is something I can prove that might help get rid of these kinds of configurations:
+
+\begin{lem}
+  Let $S$ be a set of $n$ disjoint circles and let $p$ be a point such that every line that contains $p$ intersects at least $k$ of the discs in $S$.  Then there exists a disc $D$ centered at $p$ that contains $\Omega(n)$ discs in $S$, that avoids $\Omega(n)$ discs in $S$ and whose boundary intersects $O(n/k)$ discs of $S$.
+\end{lem}
+
+\begin{proof}[Proof reminder]
+  Map each disc in $S$ to an arc on $C(p,1)$ so that a line through $p$ intersects the disc if and only if it also intersects the corresponding arc.  Then, most of the arcs have length $\Omega(1/k)$, which means that the corresponding disc has radius at least $\Omega(1/k)$ times its distance from $p$.  For now, forget about the discs whose arcs have length less than $\epsilon/ k$.  Draw $2/k$ equally spaces rays out of $p$ and associate each disc in $S$ with the ray closest to its center.  Simple packing shows that each circle centered at $p$ intersects $O(1/k)$ discs of the discs we haven't eliminated (a constant number on each ray).  Now argue that the sequence of discs hit by each ray have exponentially increasing radii, so that there are  $\Omega(k)$ disjoint classes of distances of the form $[2^i,2^{i+1}]$.  One of these distances classes contains at most $n/k$ of the discs we forgot about.  Take $D$ to be any disc centered at $p$ whose radius is in this class.
+\end{proof}
+
+Instead, I would like to sweep with a circle whose radius $r$ grows while it's centers simultaneously moves at a speed of $1/2$.  Specifically, let $v$ be a (random) unit vector and let $p$ be any point in the plane, then for each $t\ge 0$, $C_t$ is the circle of radius $t$ centered at the point $p+tv/2$. Then $\{C_t: t\in[0,\infty)\}$ is a family of circles such that $C_{t'}$ contains $C_t$ in its interior for $t'\ge t\ge 0$.  If we can ensure that, for every $t$, $C_t$ intersects $O(\sqrt{n\log n})$ discs in $S$ then this would give a representation of the intersection graph of $S$ as an interval graph of maximum clique size $O(\sqrt{n\log n})$.  The hope is that the proof would also shed some insight into a representation of the intersection graph as the blowup for a bounded pathwidth graph.
+
+The lemma below doesn't quite manage to do this.  It shows that, for a fixed $t$ and a randomly chosen unit vector $v$, $C_t$ intersets $O(\sqrt{n\log n})$ discs in $S$.  It's a theorem of the form, ``for each $t$ and nearly all $v$'' and I want a theorem of the form ``there exists some $v$ such that for all $t$''.  On the positive side, the theorem holds for any starting point $p$.  Maybe choosing $p$ carefully is important.
+
+
+% Still, it's a start, and some of the things that come up in the proof already point towards things that are might be helpful in expressing the intersection graph as a blowup of a bounded pathwidth graph $G$.  For example, for each radius $t$ there are only $\tilde{O}(\sqrt{n})$ discs whose radius is larger than $t/\sqrt{n}$ that intersect $C_t$
 
 \section{A First Lemma}
 
