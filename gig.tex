@@ -222,6 +222,8 @@ Before proving \cref{product_partition}, we argue that observe that it implies t
 For each component $B$ of $G-S_{<i}$, the part $P_{B}$ has size at most $c_2\sqrt{n/2^{i-1}}\le c_1\sqrt{n}$.  For each component $C$ of $G-S_{\le p}$, the part $P_C$ has size at most $n/2^p \le \sqrt{n}$.  Define a tree $T$ with whose vertex set includes a node $(C,i)$ for each component $C$ of $G-S_{\le i}$ for each $i\in\{0,\ldots,p\}$ in which the parent of $(C,i)$ is the unique node $(B,i-1)$ such that $V(C)\subseteq V(B)$.
 Make a tree decomposition $(B_x:x\in V(T))$ in which the bag $B_{(C,i)}$ contains $P_C$ and that contains $P_B$ if and only if there exist an ancestor $(B,j)$ of $(C,i)$ such that $N_G(C)\cap P_B\neq\emptyset$.  This gives a tree decomposition of $G/\mathcal{P}$ of width $?$.
 
+Remarks: No need to stop at $p=\tfrac12\log n$.  Only the root part needs to have size $O(\sqrt{n})$.  The $I$-shaped separators we get from product structure are special.  For example, the $O(\sqrt{s})$ separators that take a bite of size $s$ can't work.
+
 
 
 
