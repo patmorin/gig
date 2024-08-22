@@ -154,7 +154,7 @@ For a graph $G$, let $\mathdefin{|G|}:=|V(G)|$ denote the \defin{order} of $G$. 
   Start with $X:=Y$ and, as long as there exists $x\in V(G-X)$ with $|N_G(x)\cap X|\ge 2d$, add $x$ to $X$.  If this process does not stop before $|X|=2|Y|+1$, then $|E(G[X])|> 2d(|Y|+1)=d|X|+d$.  This contradicts \cref{density_bound}.
 \end{proof}
 
-For simplicity, we focus on graphs that admit $O(\sqrt{n})$-separators.  The following lemma has a lot of bells and whistles that we don't really make use of, but I thought it might help to write them all down in case they're helpful later.
+For simplicity, we focus on graphs that admit $O(\sqrt{n})$-separators.  The following lemma has a lot of bells and whistles (namely properties (c) and (d)) that we don't really make use of, but I thought it might help to write them all down in case they're helpful later.
 
 \begin{lem}\label{recursive_separator}
   For every $c>0$ there exists $c_1,c_2,d>0$ such that for every $n$-vertex graph $G$ that admits $c\sqrt{n}$-separators and every $p\in\{0,1,\ldots,\log_2 n\}$ there exists a sequence of pairwise-disjoint subsets $S_0,\ldots,S_{p+1}$ of $V(G)$ with $S_0:=S_{p+1}:=\emptyset$ such that, for each $i\in\{0,\ldots,p\}$ and each component $C$ of $G-(\bigcup_{j=0}^i S_j)$,
@@ -214,13 +214,35 @@ For simplicity, we focus on graphs that admit $O(\sqrt{n})$-separators.  The fol
 \begin{lem}\label{product_partition}
   Let $G$ be an $n$-vertex subgraph of $H\boxtimes P$ where $\tw(H)\le t$ and $P$ is a path.  Then there exists $S_1,\ldots,S_p$ satisfying the conditions of \cref{recursive_separator} as well the following condition:
   \begin{compactenum}[(a)]\setcounter{enumi}{4}
-    \item For each $i\in\{0,\ldots,p\}$ and each component $C$ of $G-(\bigcup_{j=1}^i S_j)$, $|\{\ell\in\{1,\ldots,i\}:N_G(V(C))\cap S_\ell\neq\emptyset\}|\le ?$.
+    \item For each $i\in\{0,\ldots,p\}$ and each component $C$ of $G-(\bigcup_{j=1}^i S_j)$, $|\{\ell\in\{1,\ldots,i\}:N_G(V(C))\cap S_\ell\neq\emptyset\}|\le {?}$.
   \end{compactenum}
 \end{lem}
 
-Before proving \cref{product_partition}, we argue that observe that it implies that $G$ is contained in the $O(\sqrt{n})$-blowup of a graph $H$ of treewidth at most $?$. Let $p:=\lceil \tfrac12\log_2 n\rceil$ and apply \cref{product_partition}.  Consider the partition $\mathcal{P}$ of $V(G)$ that contains a part $P_B:=V(B)\cap S_i$ For each $i\in\{1,\ldots,p\}$ and each component $B$ of $G-S_{<i}$ and a part $P_C:=V(C)$ for each component $C$ of $G-S_{\le p}$.
-For each component $B$ of $G-S_{<i}$, the part $P_{B}$ has size at most $c_2\sqrt{n/2^{i-1}}\le c_1\sqrt{n}$.  For each component $C$ of $G-S_{\le p}$, the part $P_C$ has size at most $n/2^p \le \sqrt{n}$.  Define a tree $T$ with whose vertex set includes a node $(C,i)$ for each component $C$ of $G-S_{\le i}$ for each $i\in\{0,\ldots,p\}$ in which the parent of $(C,i)$ is the unique node $(B,i-1)$ such that $V(C)\subseteq V(B)$.
-Make a tree decomposition $(B_x:x\in V(T))$ in which the bag $B_{(C,i)}$ contains $P_C$ and that contains $P_B$ if and only if there exist an ancestor $(B,j)$ of $(C,i)$ such that $N_G(C)\cap P_B\neq\emptyset$.  This gives a tree decomposition of $G/\mathcal{P}$ of width $?$.
+Before proving \cref{product_partition}, we observe that it implies that $G$ is contained in the $O(\sqrt{n})$-blowup of a graph $H$ of treewidth at most $?$.
+
+\begin{thm}
+  Let $G$ be any $n$-vertex graph that has a vertex partition $S_0,\ldots,S_{p+1}$ with $p:=\lceil\tfrac{1}{2}\log_2 n\rceil$ satisfying Conditions (a), (b), and (e).  Then $G$ has an $H$-partition of width $O(\sqrt{n})$ where $\tw(H)\le {?}$.
+\end{thm}
+
+\begin{proof}
+  % Assume without loss of generality that $G$ is connected. Apply \cref{product_partition} to $G$ with $p:=\lceil \tfrac12\log_2 n\rceil$ to obtain sets $S_0,\ldots,S_{p+1}$.
+  Consider the following partition $\mathcal{P}$ of $V(G)$.  For each $i\in\{1,\ldots,p\}$ and each component of $B$ of $G-S_{< i}$, $\mathcal{P}$ contains the part $P_B:=V(B)\cap S_i$ if and only if $V(B)\cap S_i$ is non-empty. For each $i\in\{1,\ldots,p\}$ and each component $C$ of $G-S_{\le p}$, $\mathcal{P}$ contains the part $P_C:=V(C)$.
+
+  We treat $\mathcal{P}$ as an $H$-partition $\{A_x:x\in V(H)\}$ where $H:=G/\mathcal{P}$ and where $A_x=P_C$ where $x$ is the node of $H$ obtained by contracting $P_C$.  By Property (b), for each component $B$ of $G-S_{<i}$, the part $P_{B}$ has size at most $c_2\sqrt{n/2^{i-1}}\le c_1\sqrt{n}$. By Property (a), each component $C$ of $G-S_{\le p}$, the part $P_C$ has size at most $n/2^p \le \sqrt{n}$.   Thus, the $H$-partition $\mathcal{P}$ has width $O(\sqrt{n})$.\footnote{This is the last time we make use of properties (a) and (b).  Even a weak version of (a) and (b) that only guarantees that (a) $|S_i\cap V(C)|\in O(\sqrt{n})$ for each $i<p$  and each component of $G-S_{\le i}$ and (b) each component of $G-S_{\le p}$ has $O(\sqrt{n})$ vertices is good enough.}
+
+  We now define a tree-decomposition $(B_x:x\in V(T))$ of $H$ whose bags have size at most $1+{?}$, which establishes that $\tw(H)\le {?}$.  Define the rooted tree $T$ with vertex set
+  \[
+    V(T):=\{(C,i): i\in\{0,\ldots,p\},\, \text{$C$ is a component of $G-S_{\le i}$} \}
+  \]
+  The root of $T$ is the node $(G-S_{\le 0},0)=(G,0)$. For each $i\in\{1,\ldots,p\}$ and each component $C$ of $G-S_{\le i}$, the parent of $(C,i)$ is the unique node $(B,i-1)$ such that $V(C)\subseteq V(B)$.
+
+  We now define the contents of the bags in the tree decomposition.  For a node $x:=(C,i)\in V(T)$, the bag $B_{x}$ always contains $P_C$.  Furthermore, $B_x$ contains $P_B$ for each component $B$ such that $x$ has a $T$-ancestor  $y:=(B,j)$ such that $N_G(C)\cap P_B\neq\emptyset$.  By Property (e), the number of vertices of $H$ in $B_x$ is at most $1+{?}$.  We claim that $(B_x:x\in V(T))$ is indeed a tree decomposition of $H$.
+
+
+  Let $bc$ be any edge of $H$. We need to show that some bag $B_x$ contains both $b$ and $c$.  Since $bc\in E(H)$, $G$ contains an edge $vw$ with $v\in A_b$ and $w\in A_c$.  Consider the maximally deep node $(B,j)$ of $T$ such that $v,w\in V(B)$.  Such a node $(B,j)$ exists because $G$ is connected and is unique because the components of $G-S_{\le j}$ are pairwise vertex-disjoint for each $j\in\{0,\ldots,p\}$. Then $P_B$ does not contain both $v$ and $w$ since would imply that $A_b=A_c=P_B$, which would imply $b=c$.  In particular, $(B,j)$ is not a leaf of $T$. Therefore, at least one of $v$ or $w$ is contained in $S_j\cap V(B)$ since otherwise $(B,j)$ is not maximally deep.  At most one of $v$ or $w$ is contained in $S_j\cap V(B)$ since, otherwise both $v$ and $w$ are contained in $P_{B}$ which we have already ruled out.  Suppose without loss of generality that $v\in S_j\cap V(B)$, so $b=P_B=A_b$.  Now consider the maximally deep node $(C,i)$ such that $w\in V(C)$.  Since $w\in V(C)$, $N_G(V(C))\supseteq N_G(w)\supseteq\{v\}$.  Therefore $N_G(V(C))\cap P_B\supseteq\{v\}\neq\emptyset$. By definition, this means that $(C,i)$ contains $P_B$.
+
+  Next we need to show that, for each node $b$ of $H$, the set of nodes bags in $T$ whose bags contain $b$ is connected.  Let $b$ be any node of $H$ and let $P_B:=A_b$.  Consider the maximally deep node $y:=(B,j)$ which is unique by definition. By definition, $B_y$ contains $b=P_B$.  Also by definition, any node $x:=(C,i)$ of $T$ such that $B_x$ contains $P_B$ is a descendant of $y$. Furthermore, if $x\neq y$ then $N_G(C)\cap P_B\neq\emptyset$.  For any node $z:=(D,k)$ on the path from $x$ to $y$ in $T$, $V(C)\subseteq V(D)\subseteq V(B)$ and $P_B\cap V(D)=\emptyset$.  Therefore, $N_G(V(D))\cap P_B\supseteq N_G(V(C))\cap P_B\neq\emptyset$, so $b=P_B$ is contained in $B_z$.  Therefore, for any node $x$ with $b\in B_x$, all the nodes $z$ on the path from $x$ to $y$ have $b\in B_z$.  Therefore, the set of nodes bags in $T$ whose bags contain $b$ is connected.  Therefore $(B_x:x\in V(T))$ is a tree decomposition of $H$ whose width is at most $?$.
+\end{proof}
 
 Remarks: No need to stop at $p=\tfrac12\log n$.  Only the root part needs to have size $O(\sqrt{n})$.  The $I$-shaped separators we get from product structure are special.  For example, the $O(\sqrt{s})$ separators that take a bite of size $s$ can't work.
 
