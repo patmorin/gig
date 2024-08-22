@@ -133,7 +133,40 @@
 
 \maketitle
 
-\section{A Promising Approach?}
+\section{An Overly-Complicated Approach}
+
+
+Before doing something overly-complicated, here is an easy result:
+
+\begin{thm}\label{easy}
+  Let $G$ be an $n$-vertex subgraph of $H\boxtimes P$ where $\tw(H)\le t$ and $P$ is a path.  Then $G$ is a $\sqrt{n}$-blowup of a graph of treewidth at most $t+1$.
+\end{thm}
+
+\begin{proof}[Proof Sketch]
+  Let $\langle L_i:i\in\N\rangle$ be the natural layering of $G$.  For each $i\in\{0,\ldots,\sqrt{n}-1\}$, let $X_i:=\bigcup_{j\in\N}L_{i+j\sqrt{n}}$.  Since $X_0,\ldots,X_{\sqrt{n}}$ is a partition of $V(G)$, there exists some $i$ such that $|X_i|\le\sqrt{n}$.  Then each component of $G-X_i$ is isomorphic to a subgraph of $kH\boxtimes P_{\sqrt{n}}\subseteq H\boxtimes K_{\sqrt{n}}$, where $kH$ denotes $k\ge 1$ vertex-disjoint copies of $H$. Therefore $G$ is isomorphic to a subgraph of $(kH+\{x\})\boxtimes K_{\sqrt{n}}$, where ${}+{}$ denotes the complete join, so that $x$ is an apex vertex (used to represent the set $X_i$). The graph $kH+\{x\}$ has treewidth $t+1$.
+\end{proof}
+
+
+\Cref{easy} is a bit unsatisfactory, because of the following result:
+\begin{thm}\label{star_partition}
+  Let $G$ be a graph of treewidth $t$.  Then $G$ is isomorphic to a subgraph of a $\sqrt{tn}$-blowup of a star.
+\end{thm}
+
+\Cref{star_partition} implies that, for any $k$, $H\boxtimes P_k$ is isomorphic to a $O(\sqrt{ktn})$-blowup of a star.  In particular, the treewidth of the blown-up graph (a star) does not depend on $t$.  Can we obtain a similar result for $H\boxtimes P$ where the blown-up graph has treewidth bounded indepedently of $t$ and the blowup factor is $f(t)\sqrt{n}$?  Here is an easy to prove lemma that I thought was helpful for working with tree decompositions:
+
+\begin{lem}\label{tree_boundary}
+  Let $T$ be a tree and $S\subseteq V(T)$ such that, for each component $C$ of $T-S$, $|N_T(V(C))|\le 2$.  Then, for any $v\in V(T-S)$, there exists $v'$ such that, for each component $C$ of $T-(S\cup\{v,v'\})$, $|N_T(V(C))|\le 2$.
+\end{lem}
+
+\begin{proof}
+  Let $C$ be the component of $T-S$ that contains $v$. If $|N_T(V(C))|\le 1$ then there is nothing to do.  Otherwise, let $P_{xy}$ be the path in $T$ between the two vertices $x,y$ in $N_T(V(C))$.  Let $P_{vv'}$ be the path in $T$ from $v$ to $V(P_{xy})$.  (Possibly $v'=v$, which happens when $v\in V(P_{xy})$.)  If $v'=v$, then $x$ and $y$ are in different components of $C-(S\cup\{v\})$ so, for each component $C'$ of $C-\{v\}$, $N_T(C')\subseteq\{v,x\}$ or $N_T(V(C'))\subseteq\{v,y\}$.  Otherwise, each of $x$, $y$, and $v$ is in a different component of $C-\{v'\}$ so, for each component$C'$ of $C-\{v,v'\}$, $N_T(V(C'))\subseteq\{v',x\}$, $N_T(V(C'))\subseteq\{v',y\}$, or $N_T(V(C'))\subseteq\{v',v\}$.
+\end{proof}
+
+\Cref{tree_boundary} is useful when we are constructing a separator $S$ of $G$ using bags from a tree decomposition of $G$.  It shows that by doubling the number of bags we can ensure that, for each component $C$ of $G-S$, $N_G(V(C))$ is contained in at most two bags of the tree decomposition.
+
+
+
+
 
 For a graph $G$, let $\mathdefin{|G|}:=|V(G)|$ denote the \defin{order} of $G$.  For a function $f:\N\to\R$, we say that a graph $G$ admits $f$-separators if, for every subgraph $G'$ of $G$, there exists $S\subseteq V(G')$ with $|S|\le f(|G'|)$ and such that each component of $G'-S$ has at most $|G'|/2$ vertices.
 
@@ -214,11 +247,21 @@ For simplicity, we focus on graphs that admit $O(\sqrt{n})$-separators.  The fol
 \begin{lem}\label{product_partition}
   Let $G$ be an $n$-vertex subgraph of $H\boxtimes P$ where $\tw(H)\le t$ and $P$ is a path.  Then there exists $S_1,\ldots,S_p$ satisfying the conditions of \cref{recursive_separator} as well the following condition:
   \begin{compactenum}[(a)]\setcounter{enumi}{4}
-    \item For each $i\in\{0,\ldots,p\}$ and each component $C$ of $G-(\bigcup_{j=1}^i S_j)$, $|\{\ell\in\{1,\ldots,i\}:N_G(V(C))\cap S_\ell\neq\emptyset\}|\le {?}$.
+    \item For each $i\in\{0,\ldots,p\}$ and each component $C$ of $G-(\bigcup_{j=1}^i S_j)$, $|\{\ell\in\{1,\ldots,i\}:N_G(V(C))\cap S_\ell\neq\emptyset\}|\le {2(t+2)}$.
   \end{compactenum}
 \end{lem}
 
-Before proving \cref{product_partition}, we observe that it implies that $G$ is contained in the $O(\sqrt{n})$-blowup of a graph $H$ of treewidth at most $?$.
+\begin{proof}[Proof Idea]
+  Use I-shaped separators of the form $V(H)\times\{p_i\}\cupV(H)\times\{p_j\}\cup B\times\{p_i,\ldots,p_j\}$, where $p_i,\ldots,p_j$ is s subpath of $P$ and $B$ contains two bags in the tree decomposition of $H$.  One of the bags in $B$ is used to make sure that each component has size at most $n/2^i$.  The other bag, obtained using \cref{tree_boundary}, is used to make sure that any component $C$ is contained in a set of the form $V(H')\times \{p_{x+1},\ldots,p_{y-1}\}$ where $H'$ is a connected subgraph of $H$ and $N_H(V(H'))$ is contained in at most two bags in the tree decomposition of $H$.  Then $N_G(V(C))$ can be partitioned into:
+  \begin{compactenum}
+    \item A \defin{top} contained in $V(H)\times p_x$ that is contained in one separator.
+    \item A \defin{bottom} contained in $V(H)\times p_y$ that is contained in one separator.
+    \item An $\defin{$H$-boundary}$ contained in $\{B_1\cup B_2\}\times \{p_{x+1},\ldots,p_{y-1}\}$ where each of $B_1$ and $B_2$ is a bag in the tree decomposition of $H$. Then $B_1$ and $B_2$ contain a total of at most $2(t+1)$ vertices and these are partitioned among at most $2(t+1)$ separators.
+  \end{compactenum}
+  This ensures that the result sets $S_0,\ldots,S_{p+1}$ satisfy Property~(e) with ${?}:=2(t+2)$.
+\end{proof}
+
+
 
 \begin{thm}
   Let $G$ be any $n$-vertex graph that has a vertex partition $S_0,\ldots,S_{p+1}$ with $p:=\lceil\tfrac{1}{2}\log_2 n\rceil$ satisfying Conditions (a), (b), and (e).  Then $G$ has an $H$-partition of width $O(\sqrt{n})$ where $\tw(H)\le {?}$.
