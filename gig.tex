@@ -258,7 +258,7 @@ For simplicity, we focus on graphs that admit $O(\sqrt{n})$-separators.  The fol
     \item A \defin{bottom} contained in $V(H)\times p_y$ that is contained in one separator.
     \item An $\defin{$H$-boundary}$ contained in $\{B_1\cup B_2\}\times \{p_{x+1},\ldots,p_{y-1}\}$ where each of $B_1$ and $B_2$ is a bag in the tree decomposition of $H$. Then $B_1$ and $B_2$ contain a total of at most $2(t+1)$ vertices and these are partitioned among at most $2(t+1)$ separators.
   \end{compactenum}
-  This ensures that the result sets $S_0,\ldots,S_{p+1}$ satisfy Property~(e) with ${?}:=2(t+2)$.
+  This ensures that the resulting sets $S_0,\ldots,S_{p+1}$ satisfy Property~(e) with ${?}:=2(t+2)$.
 \end{proof}
 
 
@@ -287,9 +287,15 @@ For simplicity, we focus on graphs that admit $O(\sqrt{n})$-separators.  The fol
   Next we need to show that, for each node $b$ of $H$, the set of nodes bags in $T$ whose bags contain $b$ is connected.  Let $b$ be any node of $H$ and let $P_B:=A_b$.  Consider the maximally deep node $y:=(B,j)$ which is unique by definition. By definition, $B_y$ contains $b=P_B$.  Also by definition, any node $x:=(C,i)$ of $T$ such that $B_x$ contains $P_B$ is a descendant of $y$. Furthermore, if $x\neq y$ then $N_G(C)\cap P_B\neq\emptyset$.  For any node $z:=(D,k)$ on the path from $x$ to $y$ in $T$, $V(C)\subseteq V(D)\subseteq V(B)$ and $P_B\cap V(D)=\emptyset$.  Therefore, $N_G(V(D))\cap P_B\supseteq N_G(V(C))\cap P_B\neq\emptyset$, so $b=P_B$ is contained in $B_z$.  Therefore, for any node $x$ with $b\in B_x$, all the nodes $z$ on the path from $x$ to $y$ have $b\in B_z$.  Therefore, the set of nodes bags in $T$ whose bags contain $b$ is connected.  Therefore $(B_x:x\in V(T))$ is a tree decomposition of $H$ whose width is at most $?$.
 \end{proof}
 
-Remarks: No need to stop at $p=\tfrac12\log n$.  Only the root part needs to have size $O(\sqrt{n})$.  The $I$-shaped separators we get from product structure are special.  For example, the $O(\sqrt{s})$ separators that take a bite of size $s$ can't work.
+Remarks: No need to stop at $p=\tfrac12\log n$.  Only the root part needs to have size $O(\sqrt{n})$.  The $I$-shaped separators we get from product structure are special.  For example, the $O(\sqrt{s})$ separators that take a bite of size $s$ can't work [why not?].
 
+\begin{lem}
+  For every $c>0$ there exists $c'>0$ such that any graph $G$ that admits $c\sqrt{n}$-separators contains, for each $k\in\{1,\ldots,|G|/2\}$, a set $B\subseteq V(G)$ with $k/100\le |B|\le 100k$ such that $|N_G(B)|\le c'\sqrt{k}$.
+\end{lem}
 
+\begin{proof}[Proof Sketch]
+  Start with $B_0:=V(G)$.  We maintain the inequality $|N_G(B_i)|\le c'\sqrt{|B_i|}$. To compute $B_i$ from $B_{i-1}$, take a separator $S_i$ of $G_{i-1}:=G[N_G[B_{i-1}]]$ and group the components of $G_{i-1}-S_i$ into a group $B_i$ whose size is between $|G_i|/3$ and $2|G_i|/3$.  If $|N_G(B_i)|> c'\sqrt{|B_i|}$ then take a separator $X_i$ of size $16c\sqrt{|G_i|}$ to break $G_i$ into components each of which is adjacent to at most $|N_G(B_i)|/2+16c\sqrt{|G_i|}$ vertices of $X_i\cup N_G(B_i)$.  Do a calculation similar to the one above to show that this works.
+\end{proof}
 
 
 
